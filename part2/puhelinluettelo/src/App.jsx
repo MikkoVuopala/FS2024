@@ -113,6 +113,13 @@ const App = () => {
             setSuccessMessage(null)
           }, 3000)
         })
+        .catch(error => {
+          setErrorMessage(`${error.response.data.error}`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 3000)
+          console.log(error.response.data)
+        })
     }
     
   }
@@ -121,13 +128,13 @@ const App = () => {
     event.preventDefault()
     console.log(event.target.id)
     const pers = persons.find(p => p.id === event.target.id)
-    if (confirm('Remove this person from the contacts')) {
+    if (confirm(`Remove ${pers.name} from the contacts`)) {
       personService
         .deletePerson(pers.id)
         .then(response => {
-          console.log(`Deleting `, response.data)
+          console.log(`Deleting `, pers.name)
           getAllContacts()
-          setSuccessMessage(`${response.data.name} was successfully removed from the phonebook.`)
+          setSuccessMessage(`${pers.name} was successfully removed from the phonebook.`)
           setTimeout(() => {
             setSuccessMessage(null)
           }, 3000)
